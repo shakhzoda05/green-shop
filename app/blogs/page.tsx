@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
 
 const page = () => {
   return (
-    <div className='p-10 text-[20px]'>
-      Blogs
-    </div>
-  )
-}
+    <main className="mt-[12px]">
+      <div className="container">
+        <div className="w-full shadow flex items-center justify-between p-3">
+          <h1 className="text-xl font-bold">Plant Care</h1>
+        </div>
+      </div>
+    </main>
+  );
+};
 
-export default page
+export default page;

@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
 
 const page = () => {
   return (
-    <div className='p-10 text-[20px]'>
-      Shop
-    </div>
-  )
-}
+    <main className="mt-[12px]">
+      <div className="container">
+        <div className="w-full p-3">
+          Shop
+        </div>
+      </div>
+    </main>
+  );
+};
 
-export default page
+export default page;

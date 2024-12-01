@@ -1,106 +1,144 @@
-"use client"
-import Image from 'next/image'
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { useState } from 'react'
-import Button from './Button';
-import { LogIcon } from '@/public/images/icon';
-import Modal from './Modal';
-import { useAxios } from '@/hooks/useAxios';
-import Register from './Register';
-import Verify from './Verify';
-import Login from './Login';
 
-type NavListType = { id: number; title: string; href: string, isActive: boolean }
-type AuthType = { email: string, password: string, firstName?: string, lastName?: string }
-
-const Header = () => {
-    const pathname = usePathname();
-    const [saveEmail, setSaveEmail] = useState<string>("")
-    const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
-    const [verifyValue, setVerifyValue] = useState<string>("")
-    const [selectedAuth, setSelectedAuth] = useState<"login" | "register" | "verify">('login')
-    const navList: NavListType[] = [
-        {
-            id: 1,
-            title: "Home",
-            href: "/",
-            isActive: pathname == "/"
-        },
-        {
-            id: 2,
-            title: "Shop",
-            href: "/shop",
-            isActive: pathname == "/shop"
-        },
-        {
-            id: 3,
-            title: "Plant Care",
-            href: "/plant-care",
-            isActive: pathname == "/plant-care"
-        },
-        {
-            id: 4,
-            title: "Blogs",
-            href: "/blogs",
-            isActive: pathname == "/blogs"
-        }
-    ]
-    const fetching = useAxios();
-    const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (selectedAuth === "register") {
-            const data: AuthType = {
-                email: (e.target as HTMLFormElement).email.value,
-                password: (e.target as HTMLFormElement).password.value,
-                firstName: (e.target as HTMLFormElement).username.value,
-                lastName: (e.target as HTMLFormElement).username.value
-            }
-            fetching.post('/register', data).then(() => {
-                setSaveEmail(data.email)
-                setSelectedAuth('verify')
-            });
-        }
-        else if (selectedAuth === "verify") {
-            fetching.post('/users/verify', {}, {
-                params: { email: saveEmail, code: verifyValue }
-            }).then(res => console.log(res));
-        }
-        else {
-            const data = {usernameoremail:(e.target as HTMLFormElement).email.value, password:(e.target as HTMLFormElement).password.value}
-            fetching.post('/users/verify', data).then(res => console.log(res));
-        }
-    }
-
+function GoogleIcon() {
     return (
-        <>
-            <header className='flex items-center border-b-[1px] border-gray-200 py-5 w-[1200px] mx-auto justify-between'>
-                <Image priority style={{ width: "150px", height: "34px" }} alt='logo img' src={'./logo.svg'} width={150} height={34} />
-                <nav className='flex items-center justify-center gap-[50px]'>
-                    {navList.map((item: NavListType) => (
-                        <Link className={`text-[16px] relative leading-5 text-[#3D3D3D] before:h-[3px] before:absolute before:w-full before:bg-[#46A358] before:bottom-[-30px] before:duration-500 duration-200 ${item.isActive ? "before:scale-1 font-bold" : "before:scale-0"} `} key={item.id} href={item.href}>{item.title}</Link>
-                    ))}
-                </nav>
-                <div className='flex items-center justify-center gap-[30px]'>
-                    <Image priority style={{ width: "20px", height: "20px" }} alt='Search img' src={'search-img.svg'} width={20} height={20} />
-                    <Image priority style={{ width: "29px", height: "24px" }} alt='Cart img' src={'cart.svg'} width={29} height={24} />
-                    <Button leftIcon={<LogIcon />} extraStyle='w-[100px]' onClick={() => setOpenLoginModal(true)} title={"login"} type='button' />
-                </div>
-            </header>
-            <Modal openModal={openLoginModal} setOpenModal={setOpenLoginModal} extraStyle='w-[500px]'>
-                <ul className='flex cursor-pointer items-center gap-[27px] justify-center mb-[40px] pt-[50px]'>
-                    <li onClick={() => setSelectedAuth("login")} className={`${selectedAuth == 'login' ? "text-[#46A358]" : "text-[#3D3D3D]"}  text-[16px] font-medium relative hover:opacity-70 duration-200 leading-5 after:w-[1px] after:h-4 after:bg-[#3D3D3D] after:absolute after:right-[-12px] after:bottom-0 `}>Login</li>
-                    <li onClick={() => setSelectedAuth("register")} className={`${selectedAuth == 'register' ? "text-[#46A358]" : "text-[#3D3D3D]"} text-[16px] leading-5 hover:opacity-70 duration-200 font-medium`}>Register</li>
-                </ul>
-                <form onSubmit={handleSubmit} className='w-[300px] mx-auto space-y-5'>
-                    {selectedAuth == "login" && <Login />}
-                    {selectedAuth == "register" && <Register />}
-                    {selectedAuth == "verify" && <Verify setValue={setVerifyValue} />}
-                    <Button type='submit' onClick={() => { }} extraStyle='w-[300px] !py-[15px]' title={selectedAuth == "register" ? "Register" : selectedAuth === "verify" ? "Verify" : "Login"} />
-                </form>
-            </Modal>
-        </>
-    )
-}
-
-export default Header
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clipPath="url(#clip0_9_990)">
+          <path
+            d="M16.4336 17.6055C14.6992 19.0703 12.4493 20 10 20C6.35547 20 3.15621 17.9922 1.42188 15.0625L2.07117 12.0695L4.94922 11.5352C5.61719 13.6914 7.63278 15.2734 10 15.2734C11.1484 15.2734 12.2148 14.9102 13.0938 14.2656L15.8594 14.6875L16.4336 17.6055Z"
+            fill="#59C36A"
+          />
+          <path
+            d="M16.4336 17.6055L15.8594 14.6875L13.0937 14.2656C12.2148 14.9102 11.1484 15.2734 10 15.2734V20C12.4493 20 14.6992 19.0703 16.4336 17.6055Z"
+            fill="#00A66C"
+          />
+          <path
+            d="M4.72656 10C4.72656 10.539 4.8086 11.0546 4.94922 11.5352L1.42188 15.0625C0.542969 13.5859 0 11.8515 0 10C0 8.1484 0.542969 6.41406 1.42188 4.9375L4.25285 5.42473L4.94922 8.46484C4.8086 8.94527 4.72656 9.4609 4.72656 10Z"
+            fill="#FFDA2D"
+          />
+          <path
+            d="M20 10C20 13.0468 18.5899 15.7773 16.4336 17.6055L13.0938 14.2656C13.7734 13.7734 14.3477 13.1171 14.7227 12.3437H10C9.67184 12.3437 9.41406 12.0859 9.41406 11.7578V8.24219C9.41406 7.91402 9.67184 7.65625 10 7.65625H19.25C19.5312 7.65625 19.7773 7.85543 19.8242 8.13668C19.9414 8.74609 20 9.37887 20 10Z"
+            fill="#4086F4"
+          />
+          <path
+            d="M14.7227 12.3437C14.3477 13.1171 13.7734 13.7734 13.0938 14.2656L16.4336 17.6055C18.5899 15.7773 20 13.0469 20 10C20 9.37887 19.9414 8.74609 19.8242 8.13668C19.7773 7.85543 19.5312 7.65625 19.25 7.65625H10V12.3437H14.7227Z"
+            fill="#4175DF"
+          />
+          <path
+            d="M16.5977 2.79293C16.6094 2.95699 16.5391 3.10937 16.4336 3.22652L13.9258 5.72262C13.7266 5.93355 13.3985 5.95699 13.1641 5.78121C12.2382 5.08984 11.1484 4.72656 10 4.72656C7.63278 4.72656 5.61719 6.30855 4.94922 8.46484L1.42188 4.9375C3.15621 2.00781 6.35547 0 10 0C12.332 0 14.6055 0.859375 16.3867 2.35934C16.5156 2.46484 16.5859 2.62887 16.5977 2.79293Z"
+            fill="#FF641A"
+          />
+          <path
+            d="M13.1641 5.78121C13.3984 5.95703 13.7265 5.93355 13.9257 5.72262L16.4336 3.22652C16.5391 3.10938 16.6094 2.95703 16.5976 2.79293C16.5859 2.62883 16.5156 2.46484 16.3867 2.35934C14.6055 0.859375 12.332 0 10 0V4.72656C11.1484 4.72656 12.2382 5.08984 13.1641 5.78121Z"
+            fill="#F03800"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_9_990">
+            <rect width="20" height="20" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    );
+  }
+  
+  function FacebookIcon() {
+    return (
+      <svg
+        width="11"
+        height="20"
+        viewBox="0 0 11 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8.33076 3.32083H10.1566V0.140826C9.84159 0.0974924 8.75826 -7.62939e-06 7.4966 -7.62939e-06C1.71993 -7.62939e-06 3.2916 6.54166 3.0616 7.49999H0.155762V11.055H3.06076V20H6.62243V11.0558H9.40993L9.85243 7.50083H6.6216C6.77826 5.14749 5.98743 3.32083 8.33076 3.32083Z"
+          fill="#3B5999"
+        />
+      </svg>
+    );
+  }
+  
+  function ShareFacebookIcon() {
+    return (
+      <svg
+        width="8"
+        height="15"
+        viewBox="0 0 8 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1.875 5H0V7.5H1.875V15H5V7.5H7.25L7.5 5H5V3.9375C5 3.375 5.125 3.125 5.6875 3.125H7.5V0H5.125C2.875 0 1.875 1 1.875 2.875V5Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+  
+  function ShareTwitterIcon() {
+    return (
+      <svg
+        width="15"
+        height="13"
+        viewBox="0 0 15 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.71737 12.1908C10.378 12.1908 13.4736 7.50111 13.4736 3.4346C13.4736 3.30135 13.4709 3.1688 13.4647 3.03675C14.0656 2.60239 14.588 2.06021 15 1.44331C14.4486 1.6883 13.8552 1.85327 13.2327 1.92765C13.868 1.54669 14.356 0.94378 14.5861 0.225197C13.9914 0.577835 13.3329 0.834082 12.632 0.972271C12.0702 0.374134 11.2704 0 10.3855 0C8.68578 0 7.30747 1.37831 7.30747 3.07718C7.30747 3.31876 7.3346 3.55351 7.38715 3.77887C4.82962 3.65041 2.56162 2.42565 1.04392 0.563675C0.779318 1.01833 0.626969 1.54686 0.626969 2.11037C0.626969 3.17801 1.17034 4.12059 1.99658 4.67216C1.49176 4.65663 1.01748 4.51776 0.602743 4.2871C0.602061 4.2999 0.602061 4.31286 0.602061 4.32634C0.602061 5.81691 1.66305 7.06129 3.07104 7.3433C2.81257 7.41376 2.54063 7.45163 2.25982 7.45163C2.06158 7.45163 1.86879 7.43184 1.6813 7.39619C2.07301 8.61873 3.20923 9.5086 4.55632 9.53368C3.50284 10.3592 2.17588 10.8511 0.734108 10.8511C0.48588 10.8511 0.240893 10.8369 0 10.8084C1.36193 11.6812 2.97908 12.1908 4.71737 12.1908Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+  
+  function ShareLinkedinIcon() {
+    return (
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 15 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3.125 1.5625C3.125 2.4375 2.4375 3.125 1.5625 3.125C0.6875 3.125 0 2.4375 0 1.5625C0 0.6875 0.6875 0 1.5625 0C2.4375 0 3.125 0.6875 3.125 1.5625ZM3.125 4.375H0V14.375H3.125V4.375ZM8.125 4.375H5V14.375H8.125V9.125C8.125 6.1875 11.875 5.9375 11.875 9.125V14.375H15V8.0625C15 3.125 9.4375 3.3125 8.125 5.75V4.375Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+  
+  function ShareEmailIcon() {
+    return (
+      <svg
+        width="16"
+        height="12"
+        viewBox="0 0 16 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M8 1.09091C6.30168 1.09091 3.98846 1.2365 2.51951 1.34356C2.03167 1.37911 1.65385 1.76529 1.65385 2.23696V2.76996L7.53304 5.85802C7.82344 6.01056 8.17656 6.01056 8.46697 5.85802L14.3462 2.76996V2.23696C14.3462 1.76529 13.9683 1.37911 13.4805 1.34356C12.0115 1.2365 9.69833 1.09091 8 1.09091ZM14.3462 4.01792L9.02732 6.81165C8.38843 7.14723 7.61157 7.14723 6.97268 6.81165L1.65385 4.01792V9.76304C1.65385 10.2347 2.03167 10.6209 2.51951 10.6564C3.98846 10.7635 6.30168 10.9091 8 10.9091C9.69833 10.9091 12.0115 10.7635 13.4805 10.6564C13.9683 10.6209 14.3462 10.2347 14.3462 9.76304V4.01792ZM2.43083 0.255877C3.90066 0.148756 6.25301 0 8 0C9.74699 0 12.0993 0.148756 13.5692 0.255877C14.6676 0.335933 15.5 1.20441 15.5 2.23696V9.76304C15.5 10.7956 14.6676 11.6641 13.5692 11.7441C12.0993 11.8512 9.747 12 8 12C6.25301 12 3.90066 11.8512 2.43083 11.7441C1.33237 11.6641 0.5 10.7956 0.5 9.76304V2.23696C0.5 1.20441 1.33237 0.335933 2.43083 0.255877Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+  export {
+    GoogleIcon,
+    FacebookIcon,
+    ShareFacebookIcon,
+    ShareLinkedinIcon,
+    ShareTwitterIcon,
+    ShareEmailIcon,
+  };
+  
